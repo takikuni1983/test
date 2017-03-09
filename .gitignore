@@ -1,0 +1,17 @@
+# SASS Cache
+.sass-cache/
+*.css.map
+
+# Skinny Cache
+_cache/
+
+### PROJECT ###
+/html/.htaccess
+
+### 'develop' BRANCH ONLY ###
+*.css
+!/html/assets/css/_plain/main.css
+!/html/assets/js/vendor/jquery.bxslider/jquery.bxslider.css
+!/html/assets/js/vendor/slick/slick.css
+!/html/assets/js/vendor/slick/slick-theme.css
+!/html/_pastpage/cssjs/*.css

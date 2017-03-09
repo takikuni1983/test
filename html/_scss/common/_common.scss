@@ -1,0 +1,135 @@
+@charset "utf-8";
+
+/* --------------------------------------------------- */
+/* general class
+/* --------------------------------------------------- */
+
+/* helper
+-------------------------*/
+$space: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10;
+@each $prefix in $space {
+
+  .mb#{$prefix} {
+    margin-bottom: #{$prefix}rem !important;
+  }
+  .mt#{$prefix} {
+    margin-top: #{$prefix}rem !important;
+  }
+  .pb#{$prefix} {
+    padding-bottom: #{$prefix}rem !important;
+  }
+  .pt#{$prefix} {
+    padding-top: #{$prefix}rem !important;
+  }
+  .pr#{$prefix} {
+    padding-right: #{$prefix}rem !important;
+  }
+  .pl#{$prefix} {
+    padding-left: #{$prefix}rem !important;
+  }
+  .pd#{$prefix} {
+    padding: #{$prefix}rem !important;
+  }
+}
+
+/* anchor
+-------------------------*/
+.clickable {
+  cursor: pointer;
+}
+
+/* title
+-------------------------*/
+.ti-primary {
+}
+
+.ti-secondary {
+}
+
+/* align
+-------------------------*/
+.al-right {
+  text-align: right;
+}
+
+.al-center {
+  text-align: center;
+}
+
+/* color
+-------------------------*/
+.cl-blue {
+  color: $second-color;
+}
+
+/* text
+-------------------------*/
+.tx-small {
+  @include fs(12);
+}
+.tx-medium {
+  @include fs(16);
+}
+.tx-large {
+  @include fs(18);
+}
+
+/* list
+-------------------------*/
+li + li { }
+
+li li + li { margin-top: 0; }
+
+[class*="list-"] {
+  padding-left: 1.0rem;
+}
+
+.list-disc {
+  list-style: disc inside none;
+}
+.list-num {
+  list-style: decimal inside none;
+}
+.list-inline{
+  display: flex;
+  padding: 0;
+  margin: 0;
+  dt{
+    font-weight: bold;
+  }
+  dd{
+    margin: 0;
+  }
+  
+  @include max-screen($breakpoint){
+    flex-wrap: wrap;
+  }
+}
+
+/* table
+-------------------------*/
+.tbl-primary {
+}
+
+/* btn
+-------------------------*/
+.btn-primary {
+}
+
+/* --------------------------------------------------- */
+/* カラム
+/* --------------------------------------------------- */
+
+
+/* clearfix
+-------------------------*/
+.clearfix {
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
