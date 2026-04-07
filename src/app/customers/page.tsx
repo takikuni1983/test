@@ -1,0 +1,105 @@
+import Link from 'next/link';
+import { prisma } from '@/lib/db';
+import { Plus, Search } from 'lucide-react';
+import { formatDate } from '@/lib/utils';
+import DeleteButton from '@/components/ui/DeleteButton';
+
+export default async function CustomersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ search?: string }>;
+}) {
+  const { search = '' } = await searchParams;
+
+  const customers = await prisma.customer.findMany({
+    where: search
+      ? {
+          OR: [
+            { companyName: { contains: search } },
+            { contactName: { contains: search } },
+            { email: { contains: search } },
+          ],
+        }
+      : undefined,
+    orderBy: { createdAt: 'desc' },
+    include: { _count: { select: { estimates: true, invoices: true } } },
+  });
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="relative w-64">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <form>
+            <input
+              name="search"
+              defaultValue={search}
+              placeholder="会社名・担当者名で検索"
+              className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </form>
+        </div>
+        <Link
+          href="/customers/new"
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700"
+        >
+          <Plus className="h-4 w-4" />
+          新規顧客登録
+        </Link>
+      </div>
+
+      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-gray-200 bg-gray-50">
+              <th className="text-left px-4 py-3 font-medium text-gray-600">会社名</th>
+              <th className="text-left px-4 py-3 font-medium text-gray-600">担当者名</th>
+              <th className="text-left px-4 py-3 font-medium text-gray-600">メール</th>
+              <th className="text-left px-4 py-3 font-medium text-gray-600">電話</th>
+              <th className="text-center px-4 py-3 font-medium text-gray-600">見積</th>
+              <th className="text-center px-4 py-3 font-medium text-gray-600">請求</th>
+              <th className="text-left px-4 py-3 font-medium text-gray-600">登録日</th>
+              <th className="px-4 py-3"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {customers.length === 0 ? (
+              <tr>
+                <td colSpan={8} className="text-center py-12 text-gray-400">
+                  顧客が登録されていません
+                </td>
+              </tr>
+            ) : (
+              customers.map((c) => (
+                <tr key={c.id} className="border-b border-gray-100 hover:bg-gray-50">
+                  <td className="px-4 py-3 font-medium">
+                    <Link href={`/customers/${c.id}`} className="text-blue-600 hover:underline">
+                      {c.companyName}
+                    </Link>
+                  </td>
+                  <td className="px-4 py-3 text-gray-600">{c.contactName}</td>
+                  <td className="px-4 py-3 text-gray-600">{c.email ?? '-'}</td>
+                  <td className="px-4 py-3 text-gray-600">{c.phone ?? '-'}</td>
+                  <td className="px-4 py-3 text-center text-gray-600">{c._count.estimates}</td>
+                  <td className="px-4 py-3 text-center text-gray-600">{c._count.invoices}</td>
+                  <td className="px-4 py-3 text-gray-500">{formatDate(c.createdAt.toISOString())}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex gap-2 justify-end">
+                      <Link
+                        href={`/customers/${c.id}/edit`}
+                        className="text-xs px-2 py-1 border border-gray-200 rounded hover:bg-gray-50 text-gray-600"
+                      >
+                        編集
+                      </Link>
+                      <DeleteButton id={c.id} type="customers" />
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
