@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id           Int      @id @default(autoincrement())
+  companyName  String
+  contactName  String
+  email        String?
+  phone        String?
+  postalCode   String?
+  prefecture   String?
+  city         String?
+  addressLine1 String?
+  addressLine2 String?
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  estimates Estimate[]
+  invoices  Invoice[]
+}
+
+model Estimate {
+  id             Int      @id @default(autoincrement())
+  estimateNumber String   @unique
+  customerId     Int
+  customer       Customer @relation(fields: [customerId], references: [id])
+  status         String   @default("DRAFT")
+  issueDate      DateTime
+  expiryDate     DateTime?
+  subject        String?
+  notes          String?
+  terms          String?
+  subtotal       Float    @default(0)
+  taxRate        Float    @default(10)
+  taxAmount      Float    @default(0)
+  totalAmount    Float    @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  lineItems EstimateLineItem[]
+}
+
+model EstimateLineItem {
+  id          Int      @id @default(autoincrement())
+  estimateId  Int
+  estimate    Estimate @relation(fields: [estimateId], references: [id], onDelete: Cascade)
+  sortOrder   Int      @default(0)
+  description String
+  quantity    Float    @default(1)
+  unit        String?
+  unitPrice   Float    @default(0)
+  amount      Float    @default(0)
+}
+
+model Invoice {
+  id            Int      @id @default(autoincrement())
+  invoiceNumber String   @unique
+  customerId    Int
+  customer      Customer @relation(fields: [customerId], references: [id])
+  estimateId    Int?
+  status        String   @default("DRAFT")
+  issueDate     DateTime
+  dueDate       DateTime?
+  subject       String?
+  notes         String?
+  terms         String?
+  bankInfo      String?
+  subtotal      Float    @default(0)
+  taxRate       Float    @default(10)
+  taxAmount     Float    @default(0)
+  totalAmount   Float    @default(0)
+  paidAt        DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  lineItems InvoiceLineItem[]
+}
+
+model InvoiceLineItem {
+  id          Int     @id @default(autoincrement())
+  invoiceId   Int
+  invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  sortOrder   Int     @default(0)
+  description String
+  quantity    Float   @default(1)
+  unit        String?
+  unitPrice   Float   @default(0)
+  amount      Float   @default(0)
+}
