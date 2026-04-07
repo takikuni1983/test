@@ -13,9 +13,10 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 
   if (!estimate) return NextResponse.json({ error: '見積書が見つかりません' }, { status: 404 });
 
-  const buffer = await renderToBuffer(React.createElement(EstimatePDF, { estimate: estimate as any }));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const buffer = await renderToBuffer(React.createElement(EstimatePDF, { estimate: estimate as any }) as any);
 
-  return new NextResponse(buffer, {
+  return new NextResponse(buffer as unknown as BodyInit, {
     headers: {
       'Content-Type': 'application/pdf',
       'Content-Disposition': `attachment; filename="${estimate.estimateNumber}.pdf"`,

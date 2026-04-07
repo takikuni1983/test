@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
-import { Noto_Sans_JP } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
 
-const notoSansJP = Noto_Sans_JP({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+const notoSansJP = localFont({
+  src: '../../public/fonts/NotoSansJP-Regular.otf',
   variable: '--font-noto-sans-jp',
   display: 'swap',
 });

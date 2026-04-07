@@ -4,6 +4,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model Customer {
@@ -26,31 +27,24 @@ model Customer {
 }
 
 model Estimate {
-  id             Int            @id @default(autoincrement())
-  estimateNumber String         @unique
+  id             Int      @id @default(autoincrement())
+  estimateNumber String   @unique
   customerId     Int
-  customer       Customer       @relation(fields: [customerId], references: [id])
-  status         EstimateStatus @default(DRAFT)
+  customer       Customer @relation(fields: [customerId], references: [id])
+  status         String   @default("DRAFT")
   issueDate      DateTime
   expiryDate     DateTime?
   subject        String?
   notes          String?
   terms          String?
-  subtotal       Float          @default(0)
-  taxRate        Float          @default(10)
-  taxAmount      Float          @default(0)
-  totalAmount    Float          @default(0)
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  subtotal       Float    @default(0)
+  taxRate        Float    @default(10)
+  taxAmount      Float    @default(0)
+  totalAmount    Float    @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   lineItems EstimateLineItem[]
-}
-
-enum EstimateStatus {
-  DRAFT
-  SENT
-  APPROVED
-  REJECTED
 }
 
 model EstimateLineItem {
@@ -66,34 +60,27 @@ model EstimateLineItem {
 }
 
 model Invoice {
-  id            Int           @id @default(autoincrement())
-  invoiceNumber String        @unique
+  id            Int      @id @default(autoincrement())
+  invoiceNumber String   @unique
   customerId    Int
-  customer      Customer      @relation(fields: [customerId], references: [id])
+  customer      Customer @relation(fields: [customerId], references: [id])
   estimateId    Int?
-  status        InvoiceStatus @default(DRAFT)
+  status        String   @default("DRAFT")
   issueDate     DateTime
   dueDate       DateTime?
   subject       String?
   notes         String?
   terms         String?
   bankInfo      String?
-  subtotal      Float         @default(0)
-  taxRate       Float         @default(10)
-  taxAmount     Float         @default(0)
-  totalAmount   Float         @default(0)
+  subtotal      Float    @default(0)
+  taxRate       Float    @default(10)
+  taxAmount     Float    @default(0)
+  totalAmount   Float    @default(0)
   paidAt        DateTime?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   lineItems InvoiceLineItem[]
-}
-
-enum InvoiceStatus {
-  DRAFT
-  SENT
-  PAID
-  OVERDUE
 }
 
 model InvoiceLineItem {
