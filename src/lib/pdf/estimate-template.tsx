@@ -50,9 +50,12 @@ const styles = StyleSheet.create({
   noteBox: { backgroundColor: '#f9fafb', padding: 8, borderRadius: 4, marginTop: 4 },
 });
 
-function fmtDate(d: string | null | undefined) {
+function fmtDate(d: Date | string | null | undefined) {
   if (!d) return '-';
-  try { return format(parseISO(d), 'yyyy年M月d日', { locale: ja }); } catch { return d; }
+  try {
+    const date = d instanceof Date ? d : parseISO(String(d));
+    return format(date, 'yyyy年M月d日', { locale: ja });
+  } catch { return String(d); }
 }
 
 function fmtCurrency(n: number) {
