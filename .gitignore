@@ -40,5 +40,7 @@ next-env.d.ts
 
 # SQLite DB
 dev.db
-prisma/*.db
+*.db
+*.db-journal
+prisma/prisma/
 
