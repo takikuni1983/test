@@ -31,7 +31,7 @@ export default async function EstimateDetailPage({ params }: { params: Promise<{
           >
             <Download className="h-4 w-4" /> PDF
           </a>
-          {estimate.status !== 'APPROVED' && (
+          {estimate.status !== 'INVOICED' && (
             <ConvertToInvoiceButton estimateId={estimate.id} />
           )}
           <Link
@@ -77,6 +77,12 @@ export default async function EstimateDetailPage({ params }: { params: Promise<{
             <p className="font-medium">{estimate.subject}</p>
           </div>
         )}
+        {(estimate as any).projectName && (
+          <div>
+            <p className="text-xs text-gray-500 mb-1">案件名</p>
+            <p className="font-medium">{(estimate as any).projectName}</p>
+          </div>
+        )}
 
         {/* 明細テーブル */}
         <div>
@@ -93,7 +99,12 @@ export default async function EstimateDetailPage({ params }: { params: Promise<{
             <tbody>
               {estimate.lineItems.map((item) => (
                 <tr key={item.id} className="border-b border-gray-100">
-                  <td className="px-3 py-2">{item.description}</td>
+                  <td className="px-3 py-2">
+                    <div>{item.description}</div>
+                    {(item as any).details && (
+                      <div className="text-xs text-gray-400 mt-0.5">{(item as any).details}</div>
+                    )}
+                  </td>
                   <td className="px-3 py-2 text-right">{item.quantity}</td>
                   <td className="px-3 py-2 text-center text-gray-500">{item.unit}</td>
                   <td className="px-3 py-2 text-right">{formatCurrency(item.unitPrice)}</td>

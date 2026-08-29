@@ -14,7 +14,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const body = await req.json();
-  const { customerId, status, issueDate, expiryDate, subject, notes, terms, taxRate, lineItems } = body;
+  const { customerId, status, issueDate, expiryDate, subject, projectName, notes, terms, taxRate, lineItems } = body;
 
   const result = await prisma.$transaction(async (tx) => {
     await tx.estimateLineItem.deleteMany({ where: { estimateId: Number(id) } });
@@ -22,6 +22,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const items = (lineItems ?? []).map((item: any, i: number) => ({
       sortOrder: i,
       description: item.description,
+      details: item.details ?? '',
       quantity: Number(item.quantity),
       unit: item.unit ?? '',
       unitPrice: Number(item.unitPrice),
@@ -41,6 +42,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
         issueDate: new Date(issueDate),
         expiryDate: expiryDate ? new Date(expiryDate) : null,
         subject,
+        projectName: projectName ?? '',
         notes,
         terms,
         subtotal,

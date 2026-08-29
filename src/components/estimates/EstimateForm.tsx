@@ -23,6 +23,7 @@ export default function EstimateForm({ estimate, customers, defaultCustomerId }:
     issueDate: formatDateInput(estimate?.issueDate) || new Date().toISOString().slice(0, 10),
     expiryDate: formatDateInput(estimate?.expiryDate),
     subject: estimate?.subject ?? '',
+    projectName: estimate?.projectName ?? '',
     notes: estimate?.notes ?? '',
     terms: estimate?.terms ?? '',
   });
@@ -30,11 +31,12 @@ export default function EstimateForm({ estimate, customers, defaultCustomerId }:
   const [lineItems, setLineItems] = useState<LineItemRow[]>(
     estimate?.lineItems.map((li) => ({
       description: li.description,
+      details: li.details ?? '',
       quantity: li.quantity,
       unit: li.unit ?? '',
       unitPrice: li.unitPrice,
       amount: li.amount,
-    })) ?? [{ description: '', quantity: 1, unit: '式', unitPrice: 0, amount: 0 }]
+    })) ?? [{ description: '', details: '', quantity: 1, unit: '式', unitPrice: 0, amount: 0 }]
   );
 
   const set = (field: string) =>
@@ -132,6 +134,15 @@ export default function EstimateForm({ estimate, customers, defaultCustomerId }:
               value={form.subject}
               onChange={set('subject')}
               placeholder="〇〇に関するご見積"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">案件名</label>
+            <input
+              value={form.projectName}
+              onChange={set('projectName')}
+              placeholder="案件名（任意）"
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>

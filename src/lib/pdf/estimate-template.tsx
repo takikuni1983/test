@@ -106,6 +106,12 @@ export function EstimatePDF({ estimate }: { estimate: Estimate }) {
             <Text>{estimate.subject}</Text>
           </View>
         )}
+        {(estimate as any).projectName && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>案件名</Text>
+            <Text>{(estimate as any).projectName}</Text>
+          </View>
+        )}
 
         {/* 明細テーブル */}
         <View style={styles.section}>
@@ -119,7 +125,10 @@ export function EstimatePDF({ estimate }: { estimate: Estimate }) {
             </View>
             {estimate.lineItems.map((item, i) => (
               <View key={i} style={styles.tableRow}>
-                <Text style={[styles.cell, styles.colDesc]}>{item.description}</Text>
+                <View style={[styles.cell, styles.colDesc]}>
+                  <Text>{item.description}</Text>
+                  {(item as any).details ? <Text style={{ fontSize: 7, color: '#6b7280', marginTop: 2 }}>{(item as any).details}</Text> : null}
+                </View>
                 <Text style={[styles.cell, styles.colQty]}>{item.quantity}</Text>
                 <Text style={[styles.cell, styles.colUnit]}>{item.unit}</Text>
                 <Text style={[styles.cell, styles.colPrice]}>{fmtCurrency(item.unitPrice)}</Text>

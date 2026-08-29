@@ -46,9 +46,9 @@ export function generateInvoiceNumber(lastNumber: string | null): string {
 
 export const ESTIMATE_STATUS_LABELS: Record<string, string> = {
   DRAFT: '下書き',
-  SENT: '送付済み',
+  SENT: '送信済み',
   APPROVED: '承認済み',
-  REJECTED: '却下',
+  INVOICED: '請求済み',
 };
 
 export const INVOICE_STATUS_LABELS: Record<string, string> = {
@@ -62,7 +62,7 @@ export const ESTIMATE_STATUS_COLORS: Record<string, string> = {
   DRAFT: 'bg-gray-100 text-gray-700',
   SENT: 'bg-blue-100 text-blue-700',
   APPROVED: 'bg-green-100 text-green-700',
-  REJECTED: 'bg-red-100 text-red-700',
+  INVOICED: 'bg-purple-100 text-purple-700',
 };
 
 export const INVOICE_STATUS_COLORS: Record<string, string> = {

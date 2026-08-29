@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { customerId, status, issueDate, expiryDate, subject, notes, terms, taxRate, lineItems } = body;
+  const { customerId, status, issueDate, expiryDate, subject, projectName, notes, terms, taxRate, lineItems } = body;
 
   if (!customerId || !issueDate) {
     return NextResponse.json({ error: '顧客と発行日は必須です' }, { status: 400 });
@@ -44,6 +44,7 @@ export async function POST(req: NextRequest) {
     const items = (lineItems ?? []).map((item: any, i: number) => ({
       sortOrder: i,
       description: item.description,
+      details: item.details ?? '',
       quantity: Number(item.quantity),
       unit: item.unit ?? '',
       unitPrice: Number(item.unitPrice),
@@ -63,6 +64,7 @@ export async function POST(req: NextRequest) {
         issueDate: new Date(issueDate),
         expiryDate: expiryDate ? new Date(expiryDate) : null,
         subject: subject ?? '',
+        projectName: projectName ?? '',
         notes: notes ?? '',
         terms: terms ?? '',
         subtotal,

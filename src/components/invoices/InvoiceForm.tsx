@@ -31,11 +31,12 @@ export default function InvoiceForm({ invoice, customers, defaultCustomerId }: P
   const [lineItems, setLineItems] = useState<LineItemRow[]>(
     invoice?.lineItems.map((li) => ({
       description: li.description,
+      details: (li as any).details ?? '',
       quantity: li.quantity,
       unit: li.unit ?? '',
       unitPrice: li.unitPrice,
       amount: li.amount,
-    })) ?? [{ description: '', quantity: 1, unit: '式', unitPrice: 0, amount: 0 }]
+    })) ?? [{ description: '', details: '', quantity: 1, unit: '式', unitPrice: 0, amount: 0 }]
   );
 
   const set = (field: string) =>

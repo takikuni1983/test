@@ -5,6 +5,7 @@ import { formatCurrency, TAX_RATES } from '@/lib/utils';
 
 export interface LineItemRow {
   description: string;
+  details: string;
   quantity: number;
   unit: string;
   unitPrice: number;
@@ -32,7 +33,7 @@ export default function LineItemsEditor({ items, taxRate, onChange, onTaxRateCha
   }
 
   function addItem() {
-    onChange([...items, { description: '', quantity: 1, unit: '式', unitPrice: 0, amount: 0 }]);
+    onChange([...items, { description: '', details: '', quantity: 1, unit: '式', unitPrice: 0, amount: 0 }]);
   }
 
   function removeItem(index: number) {
@@ -66,6 +67,12 @@ export default function LineItemsEditor({ items, taxRate, onChange, onTaxRateCha
                     onChange={(e) => updateItem(i, 'description', e.target.value)}
                     placeholder="品目名"
                     className="w-full border-0 focus:outline-none focus:ring-1 focus:ring-blue-500 rounded px-1 py-0.5"
+                  />
+                  <input
+                    value={item.details}
+                    onChange={(e) => updateItem(i, 'details', e.target.value)}
+                    placeholder="詳細（任意）"
+                    className="w-full border-0 focus:outline-none focus:ring-1 focus:ring-blue-500 rounded px-1 py-0.5 text-xs text-gray-500 mt-0.5"
                   />
                 </td>
                 <td className="px-2 py-1.5">
