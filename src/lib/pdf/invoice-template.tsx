@@ -8,13 +8,14 @@ import {
   Font,
 } from '@react-pdf/renderer';
 import path from 'path';
+import { pathToFileURL } from 'url';
 import { format, parseISO } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { Invoice } from '@/types';
 
 Font.register({
   family: 'NotoSansJP',
-  src: path.join(process.cwd(), 'public/fonts/NotoSansJP-Regular.otf'),
+  src: pathToFileURL(path.join(process.cwd(), 'public/fonts/NotoSansJP-Regular.otf')).href,
 });
 
 const styles = StyleSheet.create({
@@ -112,7 +113,7 @@ export function InvoicePDF({ invoice }: { invoice: Invoice }) {
         <View style={styles.section}>
           <View style={styles.table}>
             <View style={[styles.tableRow, styles.tableHeader]}>
-              <Text style={[styles.cell, styles.colDesc]}>品目・内容</Text>
+              <Text style={[styles.cell, styles.colDesc]}>項目</Text>
               <Text style={[styles.cell, styles.colQty]}>数量</Text>
               <Text style={[styles.cell, styles.colUnit]}>単位</Text>
               <Text style={[styles.cell, styles.colPrice]}>単価</Text>

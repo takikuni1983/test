@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Invoice, Customer } from '@/types';
 import LineItemsEditor, { LineItemRow } from '@/components/line-items/LineItemsEditor';
@@ -16,6 +16,11 @@ export default function InvoiceForm({ invoice, customers, defaultCustomerId }: P
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [masterItems, setMasterItems] = useState<{ id: number; name: string }[]>([]);
+
+  useEffect(() => {
+    fetch('/api/items').then((r) => r.json()).then(setMasterItems).catch(() => {});
+  }, []);
 
   const [form, setForm] = useState({
     customerId: invoice?.customerId ?? defaultCustomerId ?? '',
@@ -146,6 +151,7 @@ export default function InvoiceForm({ invoice, customers, defaultCustomerId }: P
           taxRate={taxRate}
           onChange={setLineItems}
           onTaxRateChange={setTaxRate}
+          masterItems={masterItems}
         />
       </div>
 

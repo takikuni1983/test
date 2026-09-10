@@ -8,13 +8,14 @@ import {
   Font,
 } from '@react-pdf/renderer';
 import path from 'path';
+import { pathToFileURL } from 'url';
 import { format, parseISO } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { Estimate } from '@/types';
 
 Font.register({
   family: 'NotoSansJP',
-  src: path.join(process.cwd(), 'public/fonts/NotoSansJP-Regular.otf'),
+  src: pathToFileURL(path.join(process.cwd(), 'public/fonts/NotoSansJP-Regular.otf')).href,
 });
 
 const styles = StyleSheet.create({
@@ -117,7 +118,7 @@ export function EstimatePDF({ estimate }: { estimate: Estimate }) {
         <View style={styles.section}>
           <View style={styles.table}>
             <View style={[styles.tableRow, styles.tableHeader]}>
-              <Text style={[styles.cell, styles.colDesc]}>品目・内容</Text>
+              <Text style={[styles.cell, styles.colDesc]}>項目</Text>
               <Text style={[styles.cell, styles.colQty]}>数量</Text>
               <Text style={[styles.cell, styles.colUnit]}>単位</Text>
               <Text style={[styles.cell, styles.colPrice]}>単価</Text>
@@ -127,7 +128,7 @@ export function EstimatePDF({ estimate }: { estimate: Estimate }) {
               <View key={i} style={styles.tableRow}>
                 <View style={[styles.cell, styles.colDesc]}>
                   <Text>{item.description}</Text>
-                  {(item as any).details ? <Text style={{ fontSize: 7, color: '#6b7280', marginTop: 2 }}>{(item as any).details}</Text> : null}
+                  {(item as any).details ? <Text style={{ fontSize: 7, color: '#6b7280', marginTop: 2 }}>注釈: {(item as any).details}</Text> : null}
                 </View>
                 <Text style={[styles.cell, styles.colQty]}>{item.quantity}</Text>
                 <Text style={[styles.cell, styles.colUnit]}>{item.unit}</Text>
