@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-noto-sans-jp)', 'sans-serif'],
+        sans: ['var(--font-inter)', 'var(--font-ipa)', 'sans-serif'],
       },
       colors: {
         background: 'var(--background)',

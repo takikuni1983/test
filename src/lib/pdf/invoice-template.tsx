@@ -14,13 +14,13 @@ import { ja } from 'date-fns/locale';
 import { Invoice } from '@/types';
 
 Font.register({
-  family: 'NotoSansJP',
-  src: pathToFileURL(path.join(process.cwd(), 'public/fonts/NotoSansJP-Regular.otf')).href,
+  family: 'IPAPGothic',
+  src: pathToFileURL(path.join(process.cwd(), 'public/fonts/IPAPGothic.ttf')).href,
 });
 
 const styles = StyleSheet.create({
   page: {
-    fontFamily: 'NotoSansJP',
+    fontFamily: 'IPAPGothic',
     fontSize: 9,
     padding: 40,
     color: '#1f2937',
